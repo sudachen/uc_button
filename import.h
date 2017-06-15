@@ -3,19 +3,18 @@
 #include <uccm/board.h>
 #include <~sudachen/uc_waitfor/import.h>
 
-#pragma uccm file(uccm_dynamic_defs.h) ~= #define EVENT_ID_CLICK_BUTTON ({#EVENT_ID:1} + EVENT_ID_FIRST)\n
-#pragma uccm file(uccm_dynamic_defs.h) ~= #define EVENT_ID_PRESS_BUTTON ({#EVENT_ID:1} + EVENT_ID_FIRST)\n
-#pragma uccm file(uccm_dynamic_defs.h) ~= #define EVENT_ID_RELEASE_BUTTON ({#EVENT_ID:1} + EVENT_ID_FIRST)\n
-#define EVENT_IS_BY_BUTTON(E) ((E)->o.id >= EVENT_ID_CLICK_BUTTON && (E)->o.id <= EVENT_ID_RELEASE_BUTTON )
+#pragma uccm file(uccm_dynamic_defs.h) ~= \
+  #define EVENT_ID_CLICK_BUTTON ({#EVENT_ID:1} + EVENT_ID_FIRST)\n
+#pragma uccm file(uccm_dynamic_defs.h) ~= \
+  #define EVENT_ID_PRESS_BUTTON ({#EVENT_ID:1} + EVENT_ID_FIRST)\n
+#pragma uccm file(uccm_dynamic_defs.h) ~= \
+  #define EVENT_ID_RELEASE_BUTTON ({#EVENT_ID:1} + EVENT_ID_FIRST)\n
+
+#define EVENT_IS_BY_BUTTON(E) \
+    ((E)->o.id >= EVENT_ID_CLICK_BUTTON && \
+     (E)->o.id <= EVENT_ID_RELEASE_BUTTON )
 
 #pragma uccm require(source) += [@inc]/~sudachen/uc_button/uc_button.c
-
-enum uc_button$State
-{
-    uc_button$STATE_UNKNOWN  = 0,
-    uc_button$STATE_PRESSED  = 1,
-    uc_button$STATE_RELEASED = 2,
-};
 
 typedef struct ButtonEvent ButtonEvent;
 struct ButtonEvent
@@ -25,6 +24,13 @@ struct ButtonEvent
     uint8_t btnNo;
     uint8_t state : 7;
     uint8_t signalled : 1;
+};
+
+enum uc_button$State
+{
+    uc_button$STATE_UNKNOWN  = 0,
+    uc_button$STATE_PRESSED  = 1,
+    uc_button$STATE_RELEASED = 2,
 };
 
 bool uc_button$pressButtonProbe(struct Event *e);
